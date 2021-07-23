@@ -71,7 +71,7 @@ private extension KotlinGrammar {
     static let keywords = ([
         
         
-        "as", "break", "class", "continue" "do", "else", "false", "for",
+        "as", "break", "class", "continue", "do", "else", "false", "for",
         "fun", "if", "in", "is", "interface", "null", "object", "package",
         "return", "super", "this", "throw", "true", "try", "typealias", "typeof",
         "val", "var", "when", "while", "by", "catch",

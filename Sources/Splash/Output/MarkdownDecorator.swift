@@ -15,7 +15,7 @@ public struct MarkdownDecorator {
     /// Create a Markdown decorator with a given prefix to apply to all CSS
     /// classes used when highlighting code blocks within a Markdown string.
     public init(classPrefix: String = "", grammar: Grammar = SwiftGrammar()) {
-        classPrefix = classPrefix
+        self.classPrefix = classPrefix
         highlighter = SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: classPrefix), grammar: grammar)
     }
     
