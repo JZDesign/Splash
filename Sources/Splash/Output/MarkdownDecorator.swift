@@ -40,7 +40,7 @@ public struct MarkdownDecorator {
                 let charactersToDrop = skipHighlightingPrefix + "\n"
                 code = code.dropFirst(charactersToDrop.count).escapingHTMLEntities()
             } else if code.hasPrefix("kotlin") {
-                SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: self.classPrefix), grammar: KotlinGrammar()).highlight(code)
+                code = SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: self.classPrefix), grammar: KotlinGrammar()).highlight(code)
             } else {
                 code = highlighter.highlight(code)
             }
