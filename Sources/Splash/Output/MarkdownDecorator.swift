@@ -10,13 +10,13 @@ import Foundation
 public struct MarkdownDecorator {
     private let highlighter: SyntaxHighlighter<HTMLOutputFormat>
     private let skipHighlightingPrefix = "no-highlight"
-
+    
     /// Create a Markdown decorator with a given prefix to apply to all CSS
     /// classes used when highlighting code blocks within a Markdown string.
     public init(classPrefix: String = "", grammar: Grammar = SwiftGrammar()) {
         highlighter = SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: classPrefix), grammar: grammar)
     }
-
+    
     /// Decorate all code blocks within a given Markdown string. This API assumes
     /// that the passed Markdown is valid. Each code block will be replaced by
     /// Splash-highlighted HTML for that block's code. To skip highlighting for
@@ -25,27 +25,29 @@ public struct MarkdownDecorator {
     public func decorate(_ markdown: String) -> String {
         let components = markdown.components(separatedBy: "```")
         var output = ""
-
+        
         for (index, component) in components.enumerated() {
             guard index % 2 != 0 else {
                 output.append(component)
                 continue
             }
-
+            
             var code = component.trimmingCharacters(in: .whitespacesAndNewlines)
-
+            
             if code.hasPrefix(skipHighlightingPrefix) {
                 let charactersToDrop = skipHighlightingPrefix + "\n"
                 code = code.dropFirst(charactersToDrop.count).escapingHTMLEntities()
+            } else if code.hasPrefix("kotlin") {
+                SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: classPrefix), grammar: KotlinGrammar()).highlight(code)
             } else {
                 code = highlighter.highlight(code)
             }
-
+            
             output.append("""
             <pre class="splash"><code>\(code)</code></pre>
             """)
         }
-
+        
         return output
     }
 }
