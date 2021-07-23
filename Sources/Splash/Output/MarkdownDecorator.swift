@@ -8,12 +8,14 @@ import Foundation
 
 /// Type used to decorate a Markdown file with Splash-highlighted code blocks
 public struct MarkdownDecorator {
+    private let classPrefix: String
     private let highlighter: SyntaxHighlighter<HTMLOutputFormat>
     private let skipHighlightingPrefix = "no-highlight"
     
     /// Create a Markdown decorator with a given prefix to apply to all CSS
     /// classes used when highlighting code blocks within a Markdown string.
     public init(classPrefix: String = "", grammar: Grammar = SwiftGrammar()) {
+        classPrefix = classPrefix
         highlighter = SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: classPrefix), grammar: grammar)
     }
     
@@ -38,7 +40,7 @@ public struct MarkdownDecorator {
                 let charactersToDrop = skipHighlightingPrefix + "\n"
                 code = code.dropFirst(charactersToDrop.count).escapingHTMLEntities()
             } else if code.hasPrefix("kotlin") {
-                SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: classPrefix), grammar: KotlinGrammar()).highlight(code)
+                SyntaxHighlighter(format: HTMLOutputFormat(classPrefix: self.classPrefix), grammar: KotlinGrammar()).highlight(code)
             } else {
                 code = highlighter.highlight(code)
             }
